@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const productMocks = require('../utils/mocks/products'); 
+const productMocks = require('../../utils/mocks/products'); 
 const products = [
   {
     name: "Red shoes",

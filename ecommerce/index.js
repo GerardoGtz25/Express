@@ -1,20 +1,32 @@
-const express = require("express");
-const path = require("path");
-const app = express();
-const productsRouter = require('./routes/products');
-const productsApiRouter = require('./routes/api/products');
-const bodyParse = require('body-parse')
+const express = require("express")
+const bodyParser = require('body-parser')
+const path = require("path")
+const productsRouter = require('./routes/views/products')
+const productsApiRouter = require('./routes/api/products')
 
+// app
+const app = express()
+
+// middlewares
+app.use(bodyParser.json())
+
+// static files 
 app.use("/static", express.static(path.join(__dirname, "public")))
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+// View engines setup
+app.set("views", path.join(__dirname, "views"))
+app.set("view engine", "pug")
 
-app.use("/products", productsRouter);
+// routes
+app.use("/products", productsRouter)
 app.use("/api/products", productsApiRouter)
 
-app.use(bodyParse.json())
+// redirect
+app.get('/', function(req, res){
+  res.redirect('/products')
+})
 
+// server
 const server = app.listen(8000, function() {
-  console.log(`Listening http://localhost:${server.address().port}`);
+  console.log(`Listening http://localhost:${server.address().port}`)
 });
