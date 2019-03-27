@@ -5,7 +5,7 @@ const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
 const DB_NAME = config.dbName;
 
-const MONGO_URI = `mongodb://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/?authSource=${DB_NAME}`; // prettier-ignore
+const MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${config.dbHost}/?retryWrites=true`;
 
 class MongoLib {
   constructor() {
@@ -17,10 +17,8 @@ class MongoLib {
     return new Promise((resolve, reject) => {
       this.client.connect(error => {
         if (error) {
-          console.log(error)
-          //reject(error);
+          reject(error);
         }
-
         console.log("Connected succesfully to mongo");
         resolve(this.client.db(this.dbName));
       });
@@ -28,7 +26,7 @@ class MongoLib {
   }
 
   getAll(collection, query) {
-    this.connect().then(db => {
+    return this.connect().then(db => {
       return db
         .collection(collection)
         .find(query)
