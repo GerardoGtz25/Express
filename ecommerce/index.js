@@ -2,9 +2,13 @@ const express = require("express")
 const bodyParser = require('body-parser')
 const path = require("path")
 const boom = require("boom")
+const helmet = require("helmet")
+const cors = require("cors")
 const productsRouter = require('./routes/views/products')
 const productsApiRouter = require('./routes/api/products')
 const authApiRouter = require("./routes/api/auth")
+
+const corsOptions = { origin: "http://example.com" };
 
 const {
   logErrors,
@@ -19,6 +23,8 @@ const isRequestAjaxOrApi = require('./utils/isRequestAjaxOrApi')
 const app = express()
 
 // middlewares
+app.use(helmet())
+app.use(cors(corsOptions));
 app.use(bodyParser.json())
 
 // static files 
